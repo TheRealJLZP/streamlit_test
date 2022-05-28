@@ -1,34 +1,38 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[10]:
-
-
 import pandas as pd
 import plotly.express as px
-from sklearn.preprocessing import StandardScaler
 import streamlit as st
 
-reddit_df = pd.read_csv(
-    'C:/Users/user/Downloads/Reddit Cryptocurrency Daily Discussion Comments + Sentiment Labels 28-05-2022.csv'
-)
-scaler = StandardScaler()
-label2int = {'Neutral': 0, 'Bullish': 1, 'Bearish': -1, 'Spam': 0}
-testtest_df2 = reddit_df.copy()
-testtest_df2 = pd.DataFrame(
-    [label2int[label] for label in testtest_df2['Sentiment Label']])
-testtest_df2 = pd.concat([reddit_df, testtest_df2], axis=1)
-plot_df = testtest_df2[::-1]
-plot_df = plot_df.reset_index(drop=True)
-plot_df['Index'] = range(1, len(plot_df) + 1)
-values = plot_df[0].tolist()
-xx = pd.DataFrame({'Overall Sentiment': values},
-                  index=plot_df['Created (US EDT Time)'])
-xx = xx.reset_index()
-xx['Created (US EDT Time)'] = pd.to_datetime(xx['Created (US EDT Time)'])
-xx = xx.resample('H', on='Created (US EDT Time)').sum()
-xx = xx.reset_index()
-xx[['Overall Sentiment']] = scaler.fit_transform(xx[['Overall Sentiment']])
+data = {
+    'Created (US EDT Time)': [('2022-05-26 20:00:00'), ('2022-05-26 21:00:00'),
+                              ('2022-05-26 22:00:00'), ('2022-05-26 23:00:00'),
+                              ('2022-05-27 00:00:00'), ('2022-05-27 01:00:00'),
+                              ('2022-05-27 02:00:00'), ('2022-05-27 03:00:00'),
+                              ('2022-05-27 04:00:00'), ('2022-05-27 05:00:00'),
+                              ('2022-05-27 06:00:00'), ('2022-05-27 07:00:00'),
+                              ('2022-05-27 08:00:00'), ('2022-05-27 09:00:00'),
+                              ('2022-05-27 10:00:00'), ('2022-05-27 11:00:00'),
+                              ('2022-05-27 12:00:00'), ('2022-05-27 13:00:00'),
+                              ('2022-05-27 14:00:00'), ('2022-05-27 15:00:00'),
+                              ('2022-05-27 16:00:00'), ('2022-05-27 17:00:00'),
+                              ('2022-05-27 18:00:00'), ('2022-05-27 19:00:00'),
+                              ('2022-05-27 20:00:00'), ('2022-05-27 21:00:00'),
+                              ('2022-05-27 22:00:00'),
+                              ('2022-05-27 23:00:00')],
+    'Overall Sentiment': [
+        1.1840403695941517, -0.8677820298328475, -0.8137867035321369,
+        0.9680590643913096, 0.4821011276849151, -0.9217773561335579,
+        -1.029768008734979, -1.029768008734979, -0.9757726824342684,
+        0.6980824328877571, -0.4358194194271634, -0.5978053983292949,
+        -1.677711924343505, 0.4821011276849151, -0.4898147457278739,
+        1.6160029799998357, 0.5900917802863361, -2.3796511662527413,
+        -1.029768008734979, -0.057852135322189906, 0.9140637380905992,
+        0.3741104750834941, 0.0501385172792311, 0.5900917802863361,
+        1.02205439069202, 1.0760497169927306, 1.130045043293441,
+        1.130045043293441
+    ]
+}
+
+xx = pd.DataFrame(data)
 
 bar_fig = px.bar(xx,
                  x='Created (US EDT Time)',
@@ -44,4 +48,3 @@ line_fig = px.line(xx,
 # Plot!
 st.plotly_chart(bar_fig, use_container_width=True)
 st.plotly_chart(line_fig, use_container_width=True)
-
