@@ -32,7 +32,7 @@ data = {
     ]
 }
 
-xx = pd.DataFrame(data)
+xx = round(pd.DataFrame(data),2)
 
 bar_fig = px.bar(xx,
                  x='Created (US EDT Time)',
